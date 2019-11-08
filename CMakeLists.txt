@@ -168,9 +168,10 @@ if (CMAKE_VERSION VERSION_LESS 3.15)
 endif ()
 
 install( TARGETS iso_week
-        EXPORT isoWeekConfig
+        EXPORT dateConfig
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/date )
-export( TARGETS iso_week NAMESPACE date:: FILE isoWeekConfig.cmake )
+export( TARGETS iso_week NAMESPACE date:: APPEND FILE dateTargets.cmake )
+
 if( BUILD_TZ_LIB )
     install( TARGETS date-tz
         EXPORT dateConfig
@@ -193,6 +194,12 @@ install( EXPORT dateConfig
 install (
   FILES cmake/dateConfig.cmake "${version_config}"
   DESTINATION ${CONFIG_LOC})
+
+configure_file(cmake/dateConfig.cmake.in dateConfig.cmake @ONLY)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/dateConfig.cmake"
+              "${CMAKE_CURRENT_BINARY_DIR}/dateConfigVersion.cmake"
+        DESTINATION ${CONFIG_LOC}
+        )
 
 #[===================================================================[
    testing
