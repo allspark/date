@@ -136,7 +136,7 @@ if( BUILD_TZ_LIB )
         PUBLIC_HEADER "${TZ_HEADERS}"
         VERSION "${PROJECT_VERSION}"
         SOVERSION "${PROJECT_VERSION}" )
-    if( NOT MSVC )
+    if( MSVC )
         find_package( Threads )
         target_link_libraries( date-tz PUBLIC Threads::Threads )
     endif( )
