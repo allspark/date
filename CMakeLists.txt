@@ -103,6 +103,7 @@ target_compile_definitions( iso_week INTERFACE
    tz (compiled) library
 #]===================================================================]
 if( BUILD_TZ_LIB )
+    SET(TZ_DEBUG_POSTFIX d CACHE STRING "Debug library postfix.")
     add_library( date-tz )
     target_sources( date-tz
       PUBLIC
@@ -112,6 +113,14 @@ if( BUILD_TZ_LIB )
         include/date/tz_private.h
         $<$<BOOL:${IOS}>:src/ios.mm>
         src/tz.cpp )
+
+    set_target_properties(date-tz PROPERTIES DEBUG_POSTFIX "${TZ_DEBUG_POSTFIX}")
+
+    set(TZ_LIB_NAME tz)
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        set(TZ_LIB_NAME ${TZ_LIB_NAME}${TZ_DEBUG_POSTFIX})
+    endif()
+
     add_library( date::tz ALIAS date-tz )
     target_link_libraries( date-tz PUBLIC date )
     target_include_directories( date-tz PUBLIC
