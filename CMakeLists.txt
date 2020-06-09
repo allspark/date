@@ -84,17 +84,17 @@ target_compile_definitions( date INTERFACE
 #[===================================================================[
    iso_week (header only) library
 #]===================================================================]
-add_library( iso_week INTERFACE )
-add_library( date::iso_week ALIAS iso_week )
-target_include_directories( iso_week INTERFACE
+add_library( date-iso_week INTERFACE )
+add_library( date::date-iso_week ALIAS date-iso_week )
+target_include_directories( date-iso_week INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include> )
-target_sources( iso_week INTERFACE
+target_sources( date-iso_week INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>$<INSTALL_INTERFACE:include>/date/iso_week.h
         )
 # public headers will get installed:
-set_target_properties( iso_week PROPERTIES PUBLIC_HEADER include/date/iso_week.h )
-target_compile_definitions( iso_week INTERFACE
+set_target_properties( date-iso_week PROPERTIES PUBLIC_HEADER include/date/iso_week.h )
+target_compile_definitions( date-iso_week INTERFACE
         #To workaround libstdc++ issue https://github.com/HowardHinnant/date/issues/388
         ONLY_C_LOCALE=$<IF:$<BOOL:${COMPILE_WITH_C_LOCALE}>,1,0>
         $<$<BOOL:${DISABLE_STRING_VIEW}>:HAS_STRING_VIEW=0> )
@@ -176,10 +176,10 @@ if (CMAKE_VERSION VERSION_LESS 3.15)
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/date )
 endif ()
 
-install( TARGETS iso_week
+install( TARGETS date-iso_week
         EXPORT dateConfig
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/date )
-export( TARGETS iso_week NAMESPACE date:: APPEND FILE dateTargets.cmake )
+export( TARGETS date-iso_week NAMESPACE date:: APPEND FILE dateTargets.cmake )
 
 if( BUILD_TZ_LIB )
     install( TARGETS date-tz
